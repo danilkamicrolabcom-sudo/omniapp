@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моё Супер-Приложение</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">⚡ OmniApp</div>
+        <button class="nav-btn" onclick="openTool('calc', this)">🧮 Калькулятор</button>
+        <button class="nav-btn active" onclick="openTool('todo', this)">✅ Задачи</button>
+        <button class="nav-btn" onclick="openTool('bmi', this)">⚖️ Калькулятор веса</button>
+        <button class="nav-btn" onclick="openTool('timer', this)">⏱️ Таймер фокуса</button>
+        <button class="nav-btn" onclick="openTool('finance', this)">💰 Финансы</button>
+        <button class="nav-btn" onclick="openTool('notes', this)">📝 Быстрые заметки</button>
+        <button class="nav-btn" onclick="openTool('textstat', this)">📊 Счётчик текста</button>
+        <button class="nav-btn" onclick="openTool('wheel', this); drawWheel();">🎡 Колесо выбора</button>
+        <button class="nav-btn" onclick="openTool('passgen', this)">🔐 Генератор паролей</button>
+    </div>
+
+    <div class="main">
+        <!-- Инструмент 1: Задачи -->
+        <div id="todo" class="tool active">
+            <h2>Список задач</h2>
+            <input type="text" id="todoInput" placeholder="Новая задача...">
+            <button class="action" onclick="addTodo()">Добавить</button>
+            <div id="todoList"></div>
+        </div>
+
+        <!-- Инструмент 2: ИМТ -->
+        <div id="bmi" class="tool">
+            <h2>Индекс массы тела</h2>
+            <input type="number" id="height" placeholder="Рост (см)" value="175">
+            <input type="number" id="weight" placeholder="Вес (кг)" value="70">
+            <button class="action" onclick="calcBMI()">Рассчитать</button>
+            <h3 id="bmiOut" style="text-align:center; color:#26fed7;"></h3>
+        </div>
+
+        <!-- Инструмент 3: Таймер -->
+        <div id="timer" class="tool">
+            <h2>Таймер (25 мин)</h2>
+            <div id="timeDisplay" style="font-size:48px; text-align:center; margin:20px 0; color:#26fed7;">25:00</div>
+            <button class="action" onclick="startTimer()">Старт / Пауза</button>
+        </div>
+
+        <!-- Инструмент 4: Заметки -->
+        <div id="notes" class="tool">
+            <h2>Авто-заметки</h2>
+            <textarea id="noteArea" rows="8" style="width:100%; background:#292d36; color:#fff; border:none; border-radius:10px; padding:12px;" placeholder="Пишите здесь — всё сохраняется само..."></textarea>
+        </div>
+        <!-- Инструмент 5: Обычный калькулятор -->
+        <div id="calc" class="tool">
+    <h2>Калькулятор</h2>
+    <input type="text" id="calcDisplay" readonly placeholder="0">
+    <div class="calc-grid">
+        <button class="c-btn" style="color:#26fed7" onclick="cClr()">C</button>
+        <button class="c-btn" style="color:#26fed7" onclick="cDel()">⌫</button>
+        <button class="c-btn c-op" onclick="cAdd('%')">%</button>
+        <button class="c-btn c-op" onclick="cAdd('/')">/</button>
+        <button class="c-btn" onclick="cAdd('7')">7</button>
+        <button class="c-btn" onclick="cAdd('8')">8</button>
+        <button class="c-btn" onclick="cAdd('9')">9</button>
+        <button class="c-btn c-op" onclick="cAdd('*')">*</button>
+        <button class="c-btn" onclick="cAdd('4')">4</button>
+        <button class="c-btn" onclick="cAdd('5')">5</button>
+        <button class="c-btn" onclick="cAdd('6')">6</button>
+        <button class="c-btn c-op" onclick="cAdd('-')">-</button>
+        <button class="c-btn" onclick="cAdd('1')">1</button>
+        <button class="c-btn" onclick="cAdd('2')">2</button>
+        <button class="c-btn" onclick="cAdd('3')">3</button>
+        <button class="c-btn c-op" onclick="cAdd('+')">+</button>
+        <button class="c-btn" onclick="cAdd('0')">0</button>
+        <button class="c-btn" onclick="cAdd('.')">.</button>
+        <button class="c-btn c-eq" onclick="cRun()">=</button>
+    </div>
+        </div>
+        <!-- Инструмент 6: Генератор паролей -->
+<div id="passgen" class="tool">
+    <h2>Генератор паролей</h2>
+    <div class="pass-box">
+        <input type="text" id="passOut" readonly placeholder="Нажмите «Создать»">
+        <button class="copy-btn" onclick="copyPass()" title="Скопировать">📋</button>
+    </div>
+    <div class="opt-row">
+        <span>Длина: <b id="lenVal" style="color:#26fed7;">14</b></span>
+        <input type="range" id="passLen" min="6" max="32" value="14" style="width:160px; margin:0;" oninput="document.getElementById('lenVal').textContent=this.value">
+    </div>
+    <label class="opt-row">Использовать цифры (0-9) <input type="checkbox" id="useNum" checked></label>
+    <label class="opt-row">Спецсимволы (!@#$%^&*) <input type="checkbox" id="useSym" checked></label>
+    <button class="action" onclick="makePass()">Создать пароль</button>
+</div>
+    <!-- Инструмент 7: Финансы -->
+<div id="finance" class="tool">
+    <h2>Учёт финансов</h2>
+    <div class="bal-card">
+        <div style="font-size:13px; color:#9ca3af;">Текущий баланс</div>
+        <div class="bal-num" id="finBal">0 сом</div>
+    </div>
+    <input type="text" id="finDesc" placeholder="На что (например: Обед, Зарплата)">
+    <input type="number" id="finAmt" placeholder="Сумма (например: 500)">
+    <div class="fin-btns">
+        <button class="btn-inc" onclick="addFin(1)">+ Доход</button>
+        <button class="btn-exp" onclick="addFin(-1)">- Расход</button>
+    </div>
+    <div id="finList"></div>
+</div>
+<!-- Инструмент: Счётчик текста -->
+<div id="textstat" class="tool">
+    <h2>Анализатор текста</h2>
+    <textarea id="txtInput" rows="6" style="width:100%; background:#292d36; color:#fff; border:none; border-radius:10px; padding:12px; resize:vertical;" placeholder="Вставьте или введите текст сюда..." oninput="analyzeText()"></textarea>
+    
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-val" id="stChars">0</div>
+            <div class="stat-lbl">Символов</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" id="stNoSpace">0</div>
+            <div class="stat-lbl">Без пробелов</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" id="stWords">0</div>
+            <div class="stat-lbl">Слов</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" id="stTime">0 сек</div>
+            <div class="stat-lbl">Время чтения</div>
+        </div>
+    </div>
+    <button class="action" style="margin-top:14px; background:#292d36; color:#f37b7b;" onclick="clearTextStat()">Очистить текст</button>
+</div>
+<!-- Инструмент: Колесо выбора -->
+<div id="wheel" class="tool">
+    <h2>Колесо выбора</h2>
+    <textarea id="wheelItems" rows="3" style="width:100%; background:#292d36; color:#fff; border:none; border-radius:10px; padding:10px; margin-bottom:10px;" oninput="drawWheel()">Пицца, Суши, Бургер, Плов, Шаурма</textarea>
+    
+    <div class="wheel-wrap">
+        <div class="wheel-ptr"></div>
+        <canvas id="wheelCanvas" width="300" height="300"></canvas>
+    </div>
+    
+    <button class="action" id="spinBtn" onclick="spinWheel()">Крутить колесо!</button>
+    <div class="wheel-res" id="wheelRes"></div>
+</div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
