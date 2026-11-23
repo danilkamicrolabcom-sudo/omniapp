@@ -76,3 +76,9 @@ button.action { background: #26fed7; color: #181a20; font-weight: bold; cursor: 
     
     .tool { padding: 20px 16px; max-width: 100%; }
 }
+/* Стили для Конвертера величин */
+.conv-select { width: 100%; padding: 12px; background: #292d36; color: #fff; border: none; border-radius: 10px; margin-bottom: 12px; font-size: 15px; }
+.conv-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.conv-row input { margin-bottom: 0; flex: 1; }
+.conv-row select { margin-bottom: 0; width: 120px; }
+.conv-res { background: #292d36; padding: 16px; border-radius: 12px; text-align: center; font-size: 24px; font-weight: bold; color: #26fed7; }
