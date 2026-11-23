@@ -157,15 +157,26 @@
 
     <div class="conv-row">
         <input type="number" id="convVal" value="1" oninput="runConv()">
-        <select id="unitFrom" class="conv-select" onchange="runConv()"></select>
+        <select id="unitFrom" class="conv-select" onchange="runConv()">
+            <option value="m">Метры (м)</option>
+            <option value="km">Километры (км)</option>
+            <option value="cm">Сантиметры (см)</option>
+            <option value="mi">Мили (mi)</option>
+        </select>
     </div>
 
     <div style="text-align:center; color:#9ca3af; margin-bottom:12px;">⬇️ перевести в ⬇️</div>
 
-    <select id="unitTo" class="conv-select" onchange="runConv()"></select>
+    <select id="unitTo" class="conv-select" onchange="runConv()">
+        <option value="m">Метры (м)</option>
+        <option value="km" selected>Километры (км)</option>
+        <option value="cm">Сантиметры (см)</option>
+        <option value="mi">Мили (mi)</option>
+    </select>
 
-    <div class="conv-res" id="convOut">0</div>
+    <div class="conv-res" id="convOut">0.001 km</div>
 </div>
+
 
     </div>
 
