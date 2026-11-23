@@ -248,6 +248,17 @@ function updateUnits() {
     runConv();
 }
 
+function getFactor(u) {
+    if (u === 'm' || u === 'kg' || u === 'kmh') return 1;
+    if (u === 'km') return 1000;
+    if (u === 'cm') return 0.01;
+    if (u === 'mi') return 1609.34;
+    if (u === 'g') return 0.001;
+    if (u === 'lb') return 0.453592;
+    if (u === 'ms') return 3.6;
+    return 1;
+}
+
 function runConv() {
     const val = parseFloat(document.getElementById('convVal').value);
     const cat = document.getElementById('convCat').value;
@@ -256,6 +267,19 @@ function runConv() {
     const out = document.getElementById('convOut');
 
     if (isNaN(val)) { out.textContent = '0'; return; }
+
+    let res = 0;
+    if (cat === 'temp') {
+        if (from === to) res = val;
+        else if (from === 'c') res = (val * 9 / 5) + 32;
+        else res = (val - 32) * 5 / 9;
+    } else {
+        res = (val * getFactor(from)) / getFactor(to);
+    }
+
+    out.textContent = Number(res.toFixed(4)) + ' ' + to;
+}
+
 
     let res = 0;
     if (cat === 'temp') {
