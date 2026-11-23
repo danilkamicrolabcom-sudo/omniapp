@@ -248,7 +248,7 @@ function updateUnits() {
     runConv();
 }
 
-function getFactor(u) {
+function getFactor() {
     if (u === 'm' || u === 'kg' || u === 'kmh') return 1;
     if (u === 'km') return 1000;
     if (u === 'cm') return 0.01;
