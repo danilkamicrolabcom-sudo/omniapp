@@ -18,6 +18,7 @@
         <button class="nav-btn" onclick="openTool('textstat', this)">📊 Счётчик текста</button>
         <button class="nav-btn" onclick="openTool('wheel', this); drawWheel();">🎡 Колесо выбора</button>
         <button class="nav-btn" onclick="openTool('passgen', this)">🔐 Генератор паролей</button>
+        <button class="nav-btn" onclick="openTool('conv', this); runConv();">📏 Конвертер</button>
     </div>
 
     <div class="main">
@@ -143,6 +144,27 @@
     
     <button class="action" id="spinBtn" onclick="spinWheel()">Крутить колесо!</button>
     <div class="wheel-res" id="wheelRes"></div>
+</div>
+<!-- Инструмент: Конвертер величин -->
+<div id="conv" class="tool">
+    <h2>Конвертер величин</h2>
+    <select id="convCat" class="conv-select" onchange="updateUnits()">
+        <option value="len">Длина (м, км, см, мили)</option>
+        <option value="wt">Вес (кг, г, фунты)</option>
+        <option value="temp">Температура (°C, °F)</option>
+        <option value="spd">Скорость (км/ч, м/с)</option>
+    </select>
+
+    <div class="conv-row">
+        <input type="number" id="convVal" value="1" oninput="runConv()">
+        <select id="unitFrom" class="conv-select" onchange="runConv()"></select>
+    </div>
+
+    <div style="text-align:center; color:#9ca3af; margin-bottom:12px;">⬇️ перевести в ⬇️</div>
+
+    <select id="unitTo" class="conv-select" onchange="runConv()"></select>
+
+    <div class="conv-res" id="convOut">0</div>
 </div>
 
     </div>
