@@ -18,6 +18,10 @@
         <button class="nav-btn" onclick="openTool('textstat', this)">📊 Счётчик текста</button>
         <button class="nav-btn" onclick="openTool('wheel', this); drawWheel();">🎡 Колесо выбора</button>
         <button class="nav-btn" onclick="openTool('passgen', this)">🔐 Генератор паролей</button>
+                <button class="nav-btn" style="margin-top:auto; color:#26fed7;" onclick="exportData()">💾 Скачать базу</button>
+        <button class="nav-btn" style="color:#60a5fa;" onclick="document.getElementById('importFile').click()">📂 Загрузить базу</button>
+        <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(this)">
+
     </div>
 
     <div class="main">
