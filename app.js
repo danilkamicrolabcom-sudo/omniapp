@@ -278,4 +278,45 @@ function calcSleep() {
     }).join('');
 }
 calcSleep();
+// Дыхание
+let bTimer = null;
+function toggleBreath() {
+    const circle = document.getElementById('breathCircle');
+    const btn = document.getElementById('breathBtn');
+    if (bTimer) {
+        clearInterval(bTimer);
+        bTimer = null;
+        circle.className = 'breath-circle';
+        circle.textContent = 'Готовы?';
+        btn.textContent = 'Начать практику';
+        return;
+    }
+    btn.textContent = 'Остановить';
+    let step = 0;
+    const tick = () => {
+        if (step === 0) { circle.textContent = 'Вдох...'; circle.classList.add('inhale'); }
+        else if (step === 1) { circle.textContent = 'Держим'; }
+        else if (step === 2) { circle.textContent = 'Выдох...'; circle.classList.remove('inhale'); }
+        else { circle.textContent = 'Пауза'; }
+        step = (step + 1) % 4;
+    };
+    tick();
+    bTimer = setInterval(tick, 4000);
+}
+
+// Трекер воды
+const tKey = new Date().toLocaleDateString();
+let wData = JSON.parse(localStorage.getItem('waterData')) || { date: tKey, ml: 0 };
+if (wData.date !== tKey) wData = { date: tKey, ml: 0 };
+
+function renderWater() {
+    document.getElementById('waterTxt').textContent = wData.ml + ' / 2000 мл';
+    document.getElementById('waterFill').style.width = Math.min(100, (wData.ml / 2000) * 100) + '%';
+}
+function addWater(amt) {
+    wData.ml = Math.max(0, wData.ml + amt);
+    localStorage.setItem('waterData', JSON.stringify(wData));
+    renderWater();
+}
+renderWater();
 
