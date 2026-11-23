@@ -237,9 +237,14 @@ function updateUnits() {
     const cat = document.getElementById('convCat').value;
     const uFrom = document.getElementById('unitFrom');
     const uTo = document.getElementById('unitTo');
-    uFrom.innerHTML = unitOpts[cat];
-    uTo.innerHTML = unitOpts[cat];
-    if (uTo.options.length > 1) uTo.selectedIndex = 1;
+    let html = '';
+    if (cat === 'len') html = '<option value="m">Метры (м)</option><option value="km">Километры (км)</option><option value="cm">Сантиметры (см)</option><option value="mi">Мили (mi)</option>';
+    if (cat === 'wt') html = '<option value="kg">Килограммы (кг)</option><option value="g">Граммы (г)</option><option value="lb">Фунты (lb)</option>';
+    if (cat === 'temp') html = '<option value="c">Цельсий (°C)</option><option value="f">Фаренгейт (°F)</option>';
+    if (cat === 'spd') html = '<option value="kmh">км/ч</option><option value="ms">м/с</option>';
+    uFrom.innerHTML = html;
+    uTo.innerHTML = html;
+    uTo.selectedIndex = 1;
     runConv();
 }
 
