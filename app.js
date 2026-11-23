@@ -217,7 +217,7 @@ function spinWheel() {
         
         document.getElementById('wheelRes').textContent = '🎉 Выпало: ' + items[winIndex];
     }, 4000);
-}
+
 drawWheel();
 
 
