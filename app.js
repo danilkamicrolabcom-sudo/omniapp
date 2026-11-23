@@ -269,7 +269,7 @@ function calcSleep() {
     if (!val) return;
     const [h, m] = val.split(':').map(Number);
     const wakeMins = h * 60 + m;
-   const cycles = // 9 часов, 7.5 часов и 6 часов сна
+   const cycles =; // 9 часов, 7.5 часов и 6 часов сна
     document.getElementById('sleepOut').innerHTML = cycles.map(c => {
         let bedMins = (wakeMins - c * 90 - 15 + 1440) % 1440;
         const bh = String(Math.floor(bedMins / 60)).padStart(2, '0');
