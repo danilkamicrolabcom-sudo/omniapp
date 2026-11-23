@@ -267,14 +267,15 @@ renderWater();
 function calcSleep() {
     const val = document.getElementById('wakeTime').value;
     if (!val) return;
-    const [h, m] = val.split(':').map(Number);
-    const wakeMins = h * 60 + m;
-   const cycles = ; // 9 часов, 7.5 часов и 6 часов сна
+    const parts = val.split(':');
+    const wakeMins = Number(parts.at(0)) * 60 + Number(parts.at(1));
+    const cycles = Array.of(6, 5, 4);
     document.getElementById('sleepOut').innerHTML = cycles.map(c => {
         let bedMins = (wakeMins - c * 90 - 15 + 1440) % 1440;
         const bh = String(Math.floor(bedMins / 60)).padStart(2, '0');
         const bm = String(bedMins % 60).padStart(2, '0');
-        return `<div class="sleep-pill">${bh}:${bm} <small style="color:#9ca3af;">(${c * 1.5}ч)</small></div>`;
+        return `<div class="sleep-pill">${bh}:${bm} (${c * 1.5}ч)</div>`;
     }).join('');
 }
 calcSleep();
+
