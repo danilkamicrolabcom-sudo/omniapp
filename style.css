@@ -76,11 +76,3 @@ button.action { background: #26fed7; color: #181a20; font-weight: bold; cursor: 
     
     .tool { padding: 20px 16px; max-width: 100%; }
 }
-/* Стили для модуля Здоровье и Режим */
-.breath-box { display: flex; flex-direction: column; align-items: center; margin: 16px 0; }
-.breath-circle { width: 110px; height: 110px; border-radius: 50%; background: rgba(38, 254, 215, 0.15); border: 3px solid #26fed7; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 15px; color: #26fed7; transition: transform 4s ease-in-out, background 4s; }
-.breath-circle.inhale { transform: scale(1.35); background: rgba(38, 254, 215, 0.35); }
-.water-bar { width: 100%; height: 12px; background: #292d36; border-radius: 6px; overflow: hidden; margin: 10px 0; }
-.water-fill { height: 100%; background: #60a5fa; width: 0%; transition: width 0.3s; }
-.sleep-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-.sleep-pill { background: #292d36; color: #26fed7; padding: 8px 12px; border-radius: 8px; font-weight: bold; font-size: 14px; }
