@@ -292,7 +292,6 @@ function runConv() {
     }
 
     out.textContent = Number(res.toFixed(4)) + ' ' + to;
-}
 
 updateUnits();
 
