@@ -219,5 +219,37 @@ function spinWheel() {
     }, 4000);
 
 drawWheel();
+// Резервное копирование данных (Экспорт / Импорт)
+function exportData() {
+    const backup = {
+        tasks: localStorage.getItem('tasks') || '[]',
+        savedNote: localStorage.getItem('savedNote') || '',
+        finData: localStorage.getItem('finData') || '[]'
+    };
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'omniapp-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+}
+
+function importData(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+            if (data.tasks) localStorage.setItem('tasks', data.tasks);
+            if (data.savedNote !== undefined) localStorage.setItem('savedNote', data.savedNote);
+            if (data.finData) localStorage.setItem('finData', data.finData);
+            alert('База успешно восстановлена!');
+            location.reload();
+        } catch {
+            alert('Ошибка: выберите правильный файл резервной копии (.json)');
+        }
+    };
+    reader.readAsText(file);
+}
 
 
