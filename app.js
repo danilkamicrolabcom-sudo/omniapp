@@ -219,5 +219,52 @@ function spinWheel() {
     }, 4000);
 }
 drawWheel();
+// Модуль Конвертер величин
+const unitOpts = {
+    len: '<option value="m">Метры (м)</option><option value="km">Километры (км)</option><option value="cm">Сантиметры (см)</option><option value="mi">Мили (mi)</option>',
+    wt: '<option value="kg">Килограммы (кг)</option><option value="g">Граммы (г)</option><option value="lb">Фунты (lb)</option>',
+    temp: '<option value="c">Цельсий (°C)</option><option value="f">Фаренгейт (°F)</option>',
+    spd: '<option value="kmh">км/ч</option><option value="ms">м/с</option>'
+};
+
+const toBase = {
+    m: 1, km: 1000, cm: 0.01, mi: 1609.34,
+    kg: 1, g: 0.001, lb: 0.453592,
+    kmh: 1, ms: 3.6
+};
+
+function updateUnits() {
+    const cat = document.getElementById('convCat').value;
+    const uFrom = document.getElementById('unitFrom');
+    const uTo = document.getElementById('unitTo');
+    uFrom.innerHTML = unitOpts[cat];
+    uTo.innerHTML = unitOpts[cat];
+    if (uTo.options.length > 1) uTo.selectedIndex = 1;
+    runConv();
+}
+
+function runConv() {
+    const val = parseFloat(document.getElementById('convVal').value);
+    const cat = document.getElementById('convCat').value;
+    const from = document.getElementById('unitFrom').value;
+    const to = document.getElementById('unitTo').value;
+    const out = document.getElementById('convOut');
+
+    if (isNaN(val)) { out.textContent = '0'; return; }
+
+    let res = 0;
+    if (cat === 'temp') {
+        if (from === to) res = val;
+        else if (from === 'c') res = (val * 9 / 5) + 32;
+        else res = (val - 32) * 5 / 9;
+    } else {
+        const inBase = val * toBase[from];
+        res = inBase / toBase[to];
+    }
+
+    out.textContent = Number(res.toFixed(4)) + ' ' + to;
+}
+
+updateUnits();
 
 
