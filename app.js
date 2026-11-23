@@ -219,3 +219,62 @@ function spinWheel() {
     }, 4000);
 }
 drawWheel();
+// Модуль Здоровье и Режим
+// 1. Дыхательный тренажёр
+let breathTimer = null;
+function toggleBreath() {
+    const circle = document.getElementById('breathCircle');
+    const btn = document.getElementById('breathBtn');
+    if (breathTimer) {
+        clearInterval(breathTimer);
+        breathTimer = null;
+        circle.className = 'breath-circle';
+        circle.textContent = 'Готовы?';
+        btn.textContent = 'Начать практику';
+        return;
+    }
+    btn.textContent = 'Остановить';
+    let step = 0;
+    const runStep = () => {
+        if (step === 0) { circle.textContent = 'Вдох...'; circle.classList.add('inhale'); }
+        else if (step === 1) { circle.textContent = 'Держим'; }
+        else if (step === 2) { circle.textContent = 'Выдох...'; circle.classList.remove('inhale'); }
+        else { circle.textContent = 'Пауза'; }
+        step = (step + 1) % 4;
+    };
+    runStep();
+    breathTimer = setInterval(runStep, 4000);
+}
+
+// 2. Трекер воды (с автоматическим сбросом на новый день)
+const todayKey = new Date().toLocaleDateString();
+let waterData = JSON.parse(localStorage.getItem('waterData')) || { date: todayKey, ml: 0 };
+if (waterData.date !== todayKey) waterData = { date: todayKey, ml: 0 };
+
+function addWater(amount) {
+    waterData.ml = Math.max(0, waterData.ml + amount);
+    localStorage.setItem('waterData', JSON.stringify(waterData));
+    renderWater();
+}
+function renderWater() {
+    document.getElementById('waterTxt').textContent = `${waterData.ml} / 2000 мл`;
+    const pct = Math.min(100, (waterData.ml / 2000) * 100);
+    document.getElementById('waterFill').style.width = pct + '%';
+}
+renderWater();
+
+// 3. Калькулятор циклов сна (по 90 минут)
+function calcSleep() {
+    const val = document.getElementById('wakeTime').value;
+    if (!val) return;
+    const [h, m] = val.split(':').map(Number);
+    const wakeMins = h * 60 + m;
+    const cycles =; // 9 часов, 7.5 часов и 6 часов сна
+    document.getElementById('sleepOut').innerHTML = cycles.map(c => {
+        let bedMins = (wakeMins - c * 90 - 15 + 1440) % 1440;
+        const bh = String(Math.floor(bedMins / 60)).padStart(2, '0');
+        const bm = String(bedMins % 60).padStart(2, '0');
+        return `<div class="sleep-pill">${bh}:${bm} <small style="color:#9ca3af;">(${c * 1.5}ч)</small></div>`;
+    }).join('');
+}
+calcSleep();
