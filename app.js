@@ -217,39 +217,66 @@ function spinWheel() {
         
         document.getElementById('wheelRes').textContent = '🎉 Выпало: ' + items[winIndex];
     }, 4000);
-
+}
 drawWheel();
-// Резервное копирование данных (Экспорт / Импорт)
-function exportData() {
-    const backup = {
-        tasks: localStorage.getItem('tasks') || '[]',
-        savedNote: localStorage.getItem('savedNote') || '',
-        finData: localStorage.getItem('finData') || '[]'
+// Модуль Здоровье и Режим
+// 1. Дыхательный тренажёр
+let breathTimer = null;
+function toggleBreath() {
+    const circle = document.getElementById('breathCircle');
+    const btn = document.getElementById('breathBtn');
+    if (breathTimer) {
+        clearInterval(breathTimer);
+        breathTimer = null;
+        circle.className = 'breath-circle';
+        circle.textContent = 'Готовы?';
+        btn.textContent = 'Начать практику';
+        return;
+    }
+    btn.textContent = 'Остановить';
+    let step = 0;
+    const runStep = () => {
+        if (step === 0) { circle.textContent = 'Вдох...'; circle.classList.add('inhale'); }
+        else if (step === 1) { circle.textContent = 'Держим'; }
+        else if (step === 2) { circle.textContent = 'Выдох...'; circle.classList.remove('inhale'); }
+        else { circle.textContent = 'Пауза'; }
+        step = (step + 1) % 4;
     };
-    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'omniapp-backup-' + new Date().toISOString().slice(0, 10) + '.json';
-    a.click();
+    runStep();
+    breathTimer = setInterval(runStep, 4000);
 }
 
-function importData(input) {
-    const file = input.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const data = JSON.parse(e.target.result);
-            if (data.tasks) localStorage.setItem('tasks', data.tasks);
-            if (data.savedNote !== undefined) localStorage.setItem('savedNote', data.savedNote);
-            if (data.finData) localStorage.setItem('finData', data.finData);
-            alert('База успешно восстановлена!');
-            location.reload();
-        } catch {
-            alert('Ошибка: выберите правильный файл резервной копии (.json)');
-        }
-    };
-    reader.readAsText(file);
+// 2. Трекер воды (с автоматическим сбросом на новый день)
+const todayKey = new Date().toLocaleDateString();
+let waterData = JSON.parse(localStorage.getItem('waterData')) || { date: todayKey, ml: 0 };
+if (waterData.date !== todayKey) waterData = { date: todayKey, ml: 0 };
+
+function addWater(amount) {
+    waterData.ml = Math.max(0, waterData.ml + amount);
+    localStorage.setItem('waterData', JSON.stringify(waterData));
+    renderWater();
 }
+function renderWater() {
+    document.getElementById('waterTxt').textContent = `${waterData.ml} / 2000 мл`;
+    const pct = Math.min(100, (waterData.ml / 2000) * 100);
+    document.getElementById('waterFill').style.width = pct + '%';
+}
+renderWater();
+
+// 3. Калькулятор циклов сна (по 90 минут)
+function calcSleep() {
+    const val = document.getElementById('wakeTime').value;
+    if (!val) return;
+    const [h, m] = val.split(':').map(Number);
+    const wakeMins = h * 60 + m;
+    const cycles = // 9 часов, 7.5 часов и 6 часов сна
+    document.getElementById('sleepOut').innerHTML = cycles.map(c => {
+        let bedMins = (wakeMins - c * 90 - 15 + 1440) % 1440;
+        const bh = String(Math.floor(bedMins / 60)).padStart(2, '0');
+        const bm = String(bedMins % 60).padStart(2, '0');
+        return `<div class="sleep-pill">${bh}:${bm} <small style="color:#9ca3af;">(${c * 1.5}ч)</small></div>`;
+    }).join('');
+}
+calcSleep();
 
 
