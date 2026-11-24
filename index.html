@@ -17,11 +17,8 @@
         <button class="nav-btn" onclick="openTool('notes', this)">📝 Быстрые заметки</button>
         <button class="nav-btn" onclick="openTool('textstat', this)">📊 Счётчик текста</button>
         <button class="nav-btn" onclick="openTool('wheel', this); drawWheel();">🎡 Колесо выбора</button>
+        <button class="nav-btn" onclick="openTool('health', this)">🧘 Здоровье</button>
         <button class="nav-btn" onclick="openTool('passgen', this)">🔐 Генератор паролей</button>
-                <button class="nav-btn" style="margin-top:auto; color:#26fed7;" onclick="exportData()">💾 Скачать базу</button>
-        <button class="nav-btn" style="color:#60a5fa;" onclick="document.getElementById('importFile').click()">📂 Загрузить базу</button>
-        <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(this)">
-
     </div>
 
     <div class="main">
@@ -148,7 +145,40 @@
     <button class="action" id="spinBtn" onclick="spinWheel()">Крутить колесо!</button>
     <div class="wheel-res" id="wheelRes"></div>
 </div>
+<!-- Инструмент: Здоровье и Режим -->
+<div id="health" class="tool">
+    <h2>Режим и здоровье</h2>
 
+    <!-- 1. Дыхание -->
+    <div style="background:#292d36; padding:14px; border-radius:12px; margin-bottom:14px; text-align:center;">
+        <div style="font-size:13px; color:#9ca3af;">Дыхание «Квадрат» (4-4-4-4)</div>
+        <div class="breath-box">
+            <div class="breath-circle" id="breathCircle">Готовы?</div>
+        </div>
+        <button class="action" id="breathBtn" onclick="toggleBreath()" style="margin-bottom:0;">Начать практику</button>
+    </div>
+
+    <!-- 2. Трекер воды -->
+    <div style="background:#292d36; padding:14px; border-radius:12px; margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; font-size:14px;">
+            <span>💧 Вода за сегодня:</span>
+            <b id="waterTxt" style="color:#60a5fa;">0 / 2000 мл</b>
+        </div>
+        <div class="water-bar"><div class="water-fill" id="waterFill"></div></div>
+        <div style="display:flex; gap:8px;">
+            <button class="action" onclick="addWater(250)" style="background:#60a5fa; margin:0;">+ 250 мл</button>
+            <button class="action" onclick="addWater(-250)" style="background:#22252d; color:#9ca3af; width:70px; margin:0;">-250</button>
+        </div>
+    </div>
+
+    <!-- 3. Калькулятор сна -->
+    <div style="background:#292d36; padding:14px; border-radius:12px;">
+        <div style="font-size:14px; margin-bottom:8px;">😴 Во сколько нужно проснуться?</div>
+        <input type="time" id="wakeTime" value="07:30" onchange="calcSleep()" style="background:#22252d; margin-bottom:8px;">
+        <div style="font-size:12px; color:#9ca3af;">Лучшее время лечь спать (учтены 15 мин на засыпание):</div>
+        <div class="sleep-pills" id="sleepOut"></div>
+    </div>
+</div>
 
     </div>
 
